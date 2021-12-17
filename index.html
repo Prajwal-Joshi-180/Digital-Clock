@@ -1,0 +1,115 @@
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" media="all" href="clock.css" />
+</head>
+
+<body id="body">
+    <div id="main-div" class="main-div"></div>
+    <label class="switch">
+        <input type="checkbox" onclick="myFunction()">
+        <span class="slider round"></span>
+      </label>
+    <script type="text/javascript">
+        const main = document.querySelector(".main-div");
+        let form1 = document.createElement("form");
+        let sele = document.createElement("select");
+        form1.className = "form";
+        form1.id = "form";
+        sele.className = "timeZone";
+        sele.id = "timeZone";
+        form1.appendChild(sele);
+        main.appendChild(form1);
+        let div1 = document.createElement("div");
+        let div2 = document.createElement("div");
+        let div3 = document.createElement("div");
+        let div4 = document.createElement("div");
+        let div5 = document.createElement("div");
+        let div6 = document.createElement("div");
+        div1.className = "day";
+        div2.className = "battery";
+        div3.className = "clock";
+        div4.className = "unit";
+        div5.className = "second";
+        div6.className = "date";
+        div1.id = "day";
+        div2.id = "battery";
+        div3.id = "clock";
+        div4.id = "unit";
+        div5.id = "second";
+        div6.id = "date";
+        main.appendChild(div1);
+        main.appendChild(div2);
+        main.appendChild(div3);
+        main.appendChild(div4);
+        main.appendChild(div5);
+        main.appendChild(div6);
+        setInterval(calctime, 1000);
+
+        mylist = [
+            'Asia/Kolkata',
+            'Asia/Bangkok',
+            'Asia/Dubai',
+            'Asia/Tokyo',
+            'Europe/Athens',
+            'Europe/Jersey',
+            'Europe/London',
+            'Europe/Monaco',
+            'America/New_York',
+            'America/Chicago',
+            'America/Denver',
+            'America/Jamaica',
+            'Australia/Melbourne',
+            'Australia/Sydney',
+            'Australia/Melbourne',
+            'Australia/Perth',
+            'Pacific/Guam',
+            'Atlantic/darwin',
+            'Africa/Nairobi',
+        ]
+
+        for (i = 0; i < mylist.length; i++) {
+            this.addOption(mylist[i], mylist[i]);
+        }
+
+        function addOption(text, opvalue) {
+            let optn = document.createElement("option");
+            optn.innerText = text;
+            optn.setAttribute('value', opvalue);
+            sele.appendChild(optn);
+        }
+        sele.addEventListener('change', () => {
+            calctime();
+        })
+
+        function calctime() {
+            navigator.getBattery().then(function (battery) {
+                let level = parseInt(battery.level * 100) + " % ";
+                document.getElementById("battery").innerText = level;
+            });
+            let tzone = form.timeZone.options[form.timeZone.options.selectedIndex].value;
+            let date = new Date();
+            let h = date.toLocaleString('en-US', { hour: "2-digit", timeZone: tzone });
+            let m = date.toLocaleString('en-US', { minute: "2-digit", timeZone: tzone });
+            let sec = date.toLocaleString('en-US', { second: "2-digit", timeZone: tzone });
+            let mm = date.toLocaleString('en-US', { month: "long", timeZone: tzone });
+            let dd = date.toLocaleString('en-US', { day: "2-digit", timeZone: tzone });
+            let yyyy = date.toLocaleString('en-US', { year: "numeric", timeZone: tzone });
+            let DAY = date.toLocaleString('en-US', { weekday: "long", timeZone: tzone });
+            h = h ? h : (h + 12);
+            m = m < 10 ? '0' + m : m;
+            sec = sec < 10 ? '0' + sec : sec;
+            document.getElementById("day").innerText = DAY;
+            document.getElementById("clock").innerText = h.slice(0, 2) + " : " + m;
+            document.getElementById("unit").innerText = h.slice(-2);
+            document.getElementById("second").innerText = sec;
+            document.getElementById("date").innerText = mm + " " + dd + "  " + yyyy;
+        }
+        function myFunction() {
+            var element = document.getElementById("body");
+            element.classList.toggle("mystyle");
+        }
+    </script>
+</body>
+
+</html>
